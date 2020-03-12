@@ -31,7 +31,7 @@ function ConvertHandler() {
 
 	this.getUnit = function(input) {
 		const regex = new RegExp(/[a-zA-Z]+/);
-
+		if (!regex.test(input)) return 'invalid unit';
 		const unit = input.match(regex)[0];
 		const validUnit = [
 			'gal',
@@ -47,6 +47,7 @@ function ConvertHandler() {
 			'LBS',
 			'KG',
 		];
+
 		if (!validUnit.includes(unit)) {
 			return 'invalid unit';
 		}
@@ -86,7 +87,9 @@ function ConvertHandler() {
 	};
 
 	this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-		return `${initNum}${initUnit} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
+		return `${initNum} ${this.spellOutUnit(
+			initUnit
+		)} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
 	};
 }
 

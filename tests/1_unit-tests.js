@@ -28,25 +28,26 @@ suite('Unit Tests', function() {
 
 		test('Fractional Input', function(done) {
 			const input = '1/3L';
-			assert.approximately(convertHandler.getFractionalNum(input), 0.3333, 0.01);
+			assert.approximately(convertHandler.getNum(input), 0.3333, 0.01);
 			done();
 		});
 
 		test('Fractional Input w/ Decimal', function(done) {
-			const input = '0.5/3.1L';
-			assert.approximately(convertHandler.getFractionalNum(input), 0.3333, 0.1612, 0.01);
+			const input = convertHandler.getNum('0.5/3.1');
+			const unit = 'l';
+			assert.approximately(convertHandler.convert(input, unit), 0.042608, 0.01);
 			done();
 		});
 
 		test('Invalid Input (double fraction)', function(done) {
-			const input = '0.5/3.1/5/2L';
-			assert.equal(convertHandler.getFractionalNum(input), 'invalid number');
+			const input = convertHandler.getNum('0.5/3.1/4.5l');
+			assert.equal(input, 'invalid number');
 			done();
 		});
 
 		test('No Numerical Input', function(done) {
 			const input = '42';
-			assert.equal(convertHandler.getFractionalNum(input), 'invalid unit');
+			assert.equal(convertHandler.getUnit(input), 'invalid unit');
 			done();
 		});
 	});
@@ -54,14 +55,18 @@ suite('Unit Tests', function() {
 	suite('Function convertHandler.getUnit(input)', function() {
 		const input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg', 'GAL', 'L', 'MI', 'KM', 'LBS', 'KG'];
 		test('For Each Valid Unit Inputs', function(done) {
-			assert.include(input, convertHandler.getUnit);
+			input.forEach((value) => {
+				assert.strictEqual(value.toLowerCase(), convertHandler.getUnit(value));
+			});
 
 			done();
 		});
 
 		test('Unknown Unit Input', function(done) {
 			if (!input.includes(convertHandler.getUnit)) {
-				assert.equal(convertHandler.getUnit, 'invalid unit');
+				assert.equal(convertHandler.getUnit('sl'), 'invalid unit');
+
+				done();
 			}
 		});
 	});
@@ -82,7 +87,7 @@ suite('Unit Tests', function() {
 			const input = ['gal', 'l', 'mi', 'km', 'lbs', 'kg'];
 			const expect = ['gallon', 'litre', 'miles', 'kilometers', 'kilograms', 'pound'];
 			input.forEach(function(ele, i) {
-				assert.equal(convertHandler.getReturnUnit(ele), expect[i]);
+				assert.equal(convertHandler.spellOutUnit(ele), expect[i]);
 			});
 			done();
 		});
@@ -105,14 +110,14 @@ suite('Unit Tests', function() {
 
 		test('mi to km', function(done) {
 			const input = [5, 'mi'];
-			const expected = 18.9271;
+			const expected = 8.0467;
 			assert.approximately(convertHandler.convert(input[0], input[1]), expected, 0.1); //0.1 tolerance
 			done();
 		});
 
 		test('km to mi', function(done) {
 			const input = [5, 'km'];
-			const expected = 8.0467;
+			const expected = 3.106856;
 			assert.approximately(convertHandler.convert(input[0], input[1]), expected, 0.1); //0.1 tolerance
 			done();
 		});

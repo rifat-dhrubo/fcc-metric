@@ -23,7 +23,7 @@ suite('Functional Tests', function() {
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body.initNum, 10);
-						assert.equal(res.body.initUnit, 'L');
+						assert.equal(res.body.initUnit, 'l');
 						assert.approximately(res.body.returnNum, 2.64172, 0.1);
 						assert.equal(res.body.returnUnit, 'gal');
 						done();
@@ -36,7 +36,7 @@ suite('Functional Tests', function() {
 					.query({ input: '32g' })
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
-						assert.equal(res.body, 'invalid input');
+						assert.equal(res.body, 'invalid unit');
 						done();
 					});
 			});
@@ -44,7 +44,7 @@ suite('Functional Tests', function() {
 			test('Convert 3/7.2/4kg (invalid number)', function(done) {
 				chai.request(server)
 					.get('/api/convert')
-					.query({ input: '32g' })
+					.query({ input: '3/7.2/4kg' })
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body, 'invalid number');
@@ -55,7 +55,7 @@ suite('Functional Tests', function() {
 			test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
 				chai.request(server)
 					.get('/api/convert')
-					.query({ input: '32g' })
+					.query({ input: '3/7.2/4kilomegagram' })
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body, 'invalid number and unit');
@@ -70,8 +70,8 @@ suite('Functional Tests', function() {
 					.end(function(err, res) {
 						assert.equal(res.status, 200);
 						assert.equal(res.body.initNum, 1);
-						assert.equal(res.body.initUnit, 'L');
-						assert.approximately(res.body.returnNum, 2.26417, 0.1);
+						assert.equal(res.body.initUnit, 'l');
+						assert.approximately(res.body.returnNum, 0.26417217685798894, 0.1);
 						assert.equal(res.body.returnUnit, 'gal');
 						done();
 					});
