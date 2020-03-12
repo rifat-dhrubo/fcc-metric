@@ -12,6 +12,11 @@ function ConvertHandler() {
 
 		return result;
 	};
+	this.getFractionalNum = function(input) {
+		let result;
+
+		return result;
+	};
 
 	this.getUnit = function(input) {
 		let result;
